@@ -6,6 +6,51 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model Stage {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  owner  String
+  grades Grade[]
+}
+
+model Grade {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  Groups  Group[]
+  Stage   Stage?  @relation(fields: [stageId], references: [id])
+  stageId String? @db.ObjectId
+}
+
+model Group {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  classPrice Int
+  students   Student[]
+  Grade      Grade?    @relation(fields: [gradeId], references: [id])
+  gradeId    String?   @db.ObjectId
+}
+
+model Student {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  maxMark    Int
+  level      Int
+  hasToPay   Int
+  paid       Int
+  attendance Int
+  shouldPay  Boolean
+  Group      Group?  @relation(fields: [groupId], references: [id])
+  groupId    String? @db.ObjectId
+  Test       Test?   @relation(fields: [testId], references: [id])
+  testId     String? @db.ObjectId
+}
+
+model Test {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  maxMark Int
+  level   Int
+  takers  Student[]
 }
