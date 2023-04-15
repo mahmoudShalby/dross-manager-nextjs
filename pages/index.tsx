@@ -5,14 +5,12 @@ import { PrismaClient } from '@prisma/client'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions)
-  if (!session)
+  if (!session?.user?.email)
     return { redirect: { destination: '/auth/login' } }
 
   const prisma = new PrismaClient()
   const stages = await prisma.stage.findMany({
-    where: {
-      owner: session.user?.email
-    }
+    where: { owner: session.user?.email }
   })
 
   return { props: { session, stages } }
