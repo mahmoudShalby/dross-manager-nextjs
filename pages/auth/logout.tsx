@@ -1,3 +1,3 @@
-export function getServerSideProps() {
-  return { redirect: { destination: '/' } }
-}
+import { signOut } from "next-auth/react"
+
+export default () => <button onClick={() => signOut({ callbackUrl: '/' })}>Sign out</button>

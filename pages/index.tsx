@@ -19,12 +19,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Home({ email, stages }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (email)
-    return (
-      <div>
-        <h1 className="text-3xl">{email}</h1>
-      </div>
-    )
-
-  return <h1 className="text-6xl md:text-8xl">Dross</h1>
+  return (
+    <div>
+      <h1 className="text-3xl">{email}</h1>
+    </div>
+  )
 }
